@@ -1,30 +1,25 @@
 import Foundation
 
 
-// Helper
-func roundNumber(_ value: Float) -> Float {
-    return round(value * 10000) / 10000.0 // 4 decimals
-}
-
-
-// Main function
-func goldenRatio(_ num: Float, x xTimes: UInt8) {
-    print("🔢 Number \(Int(num))")
-
-    var result = num
-    var identation = "⎿"
+// Capturing closure
+func goldenRatio(_ number: Float) -> () -> Float {
+    var num = number
     let goldenNumber: Float = 1.6180
 
-
-    for n in 1...xTimes {
-        result = roundNumber(result / goldenNumber)
-        identation.insert(" ", at: identation.startIndex)
-
-        print("\(identation) \(n)x \(result)")
+    func roundNumber(_ value: Float) -> Float {
+        return round(value * 10000) / 10000.0 // 4 decimals
     }
+
+    func makeCalc() -> Float {
+        num /= goldenNumber
+        return roundNumber(num)
+    }
+
+    return makeCalc
 }
 
 
+// Error Handling
 let thereAreEnoughArguments = CommandLine.arguments.count == 3
 
 if thereAreEnoughArguments {
@@ -32,7 +27,15 @@ if thereAreEnoughArguments {
     let arg2: UInt8? = UInt8(CommandLine.arguments[2])
 
     if let number = arg1, let times = arg2 {
-        goldenRatio(number, x: times)
+        let calcGoldenRatio = goldenRatio(number)
+        var identation = " ⎿"
+
+        print("🔢 Number \(Int(number))")
+
+        for nTimes in 1...times {
+            print("\(identation) \(nTimes)x \(calcGoldenRatio())")
+            identation.insert(" ", at: identation.startIndex)
+        }
     } else {
         print("❗️Arguments must be numbers, try again.")
     }
