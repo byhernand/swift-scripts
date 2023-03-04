@@ -1,12 +1,14 @@
 import Foundation
 
+
 // Helper
 func roundNumber(_ value: Float) -> Float {
     return round(value * 10000) / 10000.0 // 4 decimals
 }
 
+
 // Main function
-func goldenRatio(num: Float, xTimes: UInt8) {
+func goldenRatio(_ num: Float, x xTimes: UInt8) {
     print("🔢 Number \(Int(num))")
 
     var result = num
@@ -22,7 +24,18 @@ func goldenRatio(num: Float, xTimes: UInt8) {
     }
 }
 
-let number = Float(CommandLine.arguments[1])
-let times = UInt8(CommandLine.arguments[2])
 
-goldenRatio(num: number!, xTimes: times!)
+let thereAreEnoughArguments = CommandLine.arguments.count == 3
+
+if thereAreEnoughArguments {
+    let arg1: Float? = Float(CommandLine.arguments[1])
+    let arg2: UInt8? = UInt8(CommandLine.arguments[2])
+
+    if let number = arg1, let times = arg2 {
+        goldenRatio(number, x: times)
+    } else {
+        print("❗️Arguments must be numbers, try again.")
+    }
+} else {
+    print("❗️The program needs 2 arguments, try again.")
+}
