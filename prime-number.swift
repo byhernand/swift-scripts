@@ -1,5 +1,6 @@
 import Foundation
 
+// Main function
 func isPrime(_ num: Int) -> Bool {
     let primeNumbers = [2,3,5,7]
 
@@ -14,6 +15,17 @@ func isPrime(_ num: Int) -> Bool {
     return true
 }
 
-let number = Int(CommandLine.arguments[1])
+let thereAreEnoughArguments = CommandLine.arguments.count > 1
 
-print(isPrime(number!))
+if thereAreEnoughArguments {
+    let arg1 = CommandLine.arguments[1]
+    let number: Int? = Int(arg1)
+
+    if number != nil {
+        print(isPrime(number!))
+    } else {
+        print("❗️No valid argument, \"\(arg1)\" is not a number.")
+    }
+} else {
+    print("❗️Empty argument, you must provide a number.")
+}
