@@ -4,28 +4,38 @@ import Foundation
 func makeReadableNumber(_ num: Int) {
     let numbers = String(num).reversed()
     let commaPosition = 3
-    var i = 1
+    var numPosition = 1
+    var numWithCommas = String()
 
-    let addingCommas = numbers.map {
-        if i == commaPosition && $0 != numbers.last {
-            i = 1
-            return "\($0),"
+    for (idx, number) in numbers.enumerated() {
+        let isLastItem = idx == (numbers.count - 1)
+        let needToAddComma = numPosition == commaPosition
+
+        if isLastItem {
+            numWithCommas += "\(number)"
+            break
         } else {
-            i += 1
-            return "\($0)"
+            numWithCommas += needToAddComma ? "\(number)," : "\(number)"
+            numPosition += needToAddComma ? -2 : 1
         }
     }
 
-    let readableNum = addingCommas.joined().reversed()
+    let readableNum = numWithCommas.reversed()
 
     print(String(readableNum))
 }
 
 
-let userInput = Int(CommandLine.arguments[1])
+let thereAreArguments = CommandLine.arguments.count > 1
 
-if userInput != nil {
-    makeReadableNumber(userInput!)
+if thereAreArguments {
+    let userInput = Int(CommandLine.arguments[1])
+
+    if userInput != nil  {
+        makeReadableNumber(userInput!)
+    } else {
+        print("❌ No valid number, try again.")
+    }
 } else {
-    print("Invalid input")
+    print("❌ There's no enough arguments, try again.")
 }
